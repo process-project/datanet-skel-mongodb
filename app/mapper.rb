@@ -3,11 +3,11 @@ module Datanet
 		module Mongodb
 
 			class Mapper
-				def initialize mongodb
+				def initialize(mongodb)
 					@db = mongodb
 				end
 
-				def collection entity_type
+				def collection(entity_type)
 					Collection.new @db[entity_type]
 				end			
 			end
@@ -25,7 +25,7 @@ module Datanet
 					ids
 				end
 
-				def add json_doc
+				def add(json_doc)
 					added = @collection.insert(json_doc)
 					added.to_s
 				end				
@@ -36,11 +36,11 @@ module Datanet
 					hash						
 				end
 
-				def remove id
+				def remove(id)
 					@collection.remove('_id' => bson(id))
 				end
 
-				def update id, json_doc
+				def update(id, json_doc)
 					entity = entity(id)
 					json_doc.each{|k,v| 						
 						entity[k] = v
@@ -48,7 +48,7 @@ module Datanet
 					@collection.save(entity)
 				end
 
-				def replace id, json_doc
+				def replace(id, json_doc)
 					@collection.update({"_id" => bson(id)}, json_doc)
 				end
 
