@@ -3,7 +3,7 @@ source :rubygems
 gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
-gem 'datanet-skel', github: 'dice-cyfronet/datanet-skel'
+gem 'datanet-skel', git: 'git@dev.cyfronet.pl:datanet-skel.git'
 
 group :development, :test do
 	gem 'shotgun'

@@ -52,6 +52,14 @@ module Datanet
 					@collection.update({"_id" => bson(id)}, json_doc)
 				end
 
+				def search(and_query)
+					ids = []
+					@collection.find(and_query).to_a.each { |e|
+			  			ids << e["_id"].to_s                            	      		
+					}
+					ids
+				end
+
 				private
 
 				def entity id
