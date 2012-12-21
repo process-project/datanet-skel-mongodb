@@ -5,7 +5,7 @@
     "authId": { "type":"string", "required": true },
     "blurb": { "type":"string", "required": true }
   },
-  
+
   "links": [
     { "rel":"self", "href":"entity/book/{id}" },
     { "rel":"instances", "href":"/book" },
@@ -14,4 +14,4 @@
       "targetSchema":"author"
     }
   ]
-} 
+}

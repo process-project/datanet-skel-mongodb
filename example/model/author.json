@@ -3,7 +3,7 @@
     "name": { "type":"string" },
     "bio": { "type":"string" },
   },
-  
+
   "links": [
     { "rel" :"self", "href":"/entity/author/{id}" },
     { "rel" :"instances", "href":"entity/author" },
@@ -12,4 +12,4 @@
       "targetSchema":"book"
     }
   ]
-} 
+}
