@@ -1,9 +1,10 @@
 source :rubygems
 
+gem 'rack'
 gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
-gem 'datanet-skel', git: 'git@dev.cyfronet.pl:datanet-skel.git'
+gem 'datanet-skel'#, :git => 'git@dev.cyfronet.pl:datanet-skel.git'
 
 group :development, :test do
 	gem 'shotgun'
@@ -17,4 +18,5 @@ group :development, :test do
   gem 'rb-fsevent', :require => false
   gem 'rb-fchange', :require => false
   gem 'rack-test'
+	gem 'rake'
 end
