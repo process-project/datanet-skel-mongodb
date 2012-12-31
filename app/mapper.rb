@@ -71,7 +71,7 @@ module Datanet
 
         def convert_into_relation(ref_id, model_name)
           #TODO check if model and referenced object exists
-          ref_id
+          bson(ref_id)
         end
 
         def entity id
