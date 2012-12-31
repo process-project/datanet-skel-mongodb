@@ -1,7 +1,7 @@
 {
   "properties": {
-    "name": { "type":"string" },
-    "bio": { "type":"string" },
+    "name": { "type":"string", "required": true },
+    "bio": { "type":"string" }
   },
 
   "links": [
