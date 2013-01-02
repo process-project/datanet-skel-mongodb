@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "properties": {
+    "name": { "type":"string", "required": true },
+    "default_species_id": { "type":"string" },
+    "lla_script_name": { "type":"string", "required": true },
+    "data_source_type_id": { "type":"string" }
+  },
+
+  "links": [
+    { "rel": "self", "href": "/data_source/{id}" },
+    { "rel": "instances", "href": "/data_source" },
+
+    { "rel" : "data_source_type",
+      "href": "/data_source_type/{data_source_type_id}",
+      "targetSchema": "data_source_type"
+    },
+    { "rel" : "default_species",
+      "href": "/species/{default_species_id}",
+      "targetSchema": "species"
+    },
+    { "rel" : "microarrays",
+      "href": "/microarray?data_source_id={id}",
+      "targetSchema": "species"
+    }
+  ]
+}

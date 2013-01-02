@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "custom_identifier": { "type":"string" },
+    "oridinal_no": { "type":"integer", "required": true },
+    "description": { "type":"string" },
+    "microarray_file_file_name": { "type":"string" },
+    "microarray_file_content_type": { "type":"string" },
+    "microarray_file_file_size": { "type":"string" },
+    "initial_microarray_file_name": { "type":"string" },
+    "verification_status": { "type":"string" },
+
+    "microarray_type_id": { "type":"string" },
+    "species_id": { "type":"string" },
+    "data_source_id ": { "type":"string" },
+
+    "user": { "type":"string" }
+  },
+
+  "links": [
+    { "rel":"self", "href":"microarray/{id}" },
+    { "rel":"instances", "href":"/microarray" },
+
+    { "rel" :"species",
+      "href":"/species/{species_id}",
+      "targetSchema":"species"
+    },
+    { "rel" :"data_source",
+      "href":"/data_source/{data_source_id}",
+      "targetSchema":"data_source"
+    }
+  ]
+}
