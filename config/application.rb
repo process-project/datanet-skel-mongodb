@@ -9,3 +9,4 @@ Bundler.require :default, ENV['RACK_ENV']
 require 'datanet-skel'
 require 'mongo'
 require 'mapper'
+require 'json'
