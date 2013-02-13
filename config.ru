@@ -1,6 +1,6 @@
 require File.expand_path('../config/environment', __FILE__)
 
-MODEL_LOCATION = 'example/model'
+MODEL_LOCATION = 'model'
 
 def mapper
 	@mapper ||= create_mongo_db_mapper
@@ -29,4 +29,5 @@ def create_mongo_db_mapper
 end
 
 Datanet::Skel::API.mapper = mapper
+Datanet::Skel::API.storage_host = "zeus.cyfronet.pl"
 run Datanet::Skel::API

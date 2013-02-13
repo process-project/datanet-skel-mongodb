@@ -26,6 +26,8 @@ module Datanet
 				end
 
 				def add json_doc
+          # TODO przemysleć specyficzną obsługę dla typu plikowego - dodawane relacje moga być obustronne
+          # + sprzątanie nieaktywnych plików z infrastruktury
 					added = @collection.insert(json_doc)
 					added.to_s
 				end				
@@ -35,14 +37,14 @@ module Datanet
 					hash.delete '_id'			
 					hash						
 				end
-
+        #
 				def remove id
 					@collection.remove('_id' => bson(id))
 				end
 
 				def update id, json_doc
 					entity = entity(id)
-					json_doc.each{|k,v| 						
+					json_doc.each{|k,v|
 						entity[k] = v
 					}
 					@collection.save(entity)
