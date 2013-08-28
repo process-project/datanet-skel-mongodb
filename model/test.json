@@ -1,8 +1,0 @@
-{
-	"type": "object",
-	"properties": {
-		"name"  : {"type": "string", "required": true},
-		"type"  : {"type": "string", "required": true},
-		"count" : {"type": "integer", "required": true}
-	}
-}
