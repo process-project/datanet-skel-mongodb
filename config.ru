@@ -1,4 +1,5 @@
 require File.expand_path('../config/environment', __FILE__)
+require File.expand_path('../config/settings', __FILE__)
 
 MODEL_LOCATION = 'model'
 
@@ -28,6 +29,9 @@ def create_mongo_db_mapper
   mapper_decorator
 end
 
+plgrid_auth = Datanet::Skel::PortalAuthenticatable.new(Datanet::Skel::Mongodb::Settings.portal_base_url, Datanet::Skel::Mongodb::Settings.portal_shared_key)
 Datanet::Skel::API.mapper = mapper
-Datanet::Skel::API.storage_host = "zeus.cyfronet.pl"
+Datanet::Skel::API.storage_host = Datanet::Skel::Mongodb::Settings.storage_host
+Datanet::Skel::API.auth = nil
+Datanet::Skel::API.auth_storage = plgrid_auth
 run Datanet::Skel::API
