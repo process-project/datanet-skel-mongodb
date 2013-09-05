@@ -54,7 +54,7 @@ module Datanet
 
         def search(and_query)
           ids = []
-          @collection.find(and_query).to_a.each { |e|
+          @collection.find(query(and_query)).to_a.each { |e|
             ids << e["_id"].to_s
           }
           ids
@@ -70,7 +70,7 @@ module Datanet
         end
 
         def convert_into_relation(ref_id, model_name)
-#TODO check if model and referenced object exists
+          #TODO check if model and referenced object exists
           bson(ref_id)
         end
 
@@ -82,6 +82,17 @@ module Datanet
 
         def bson id
           BSON::ObjectId id
+        end
+
+        def query(and_query)
+          ids = and_query.delete('ids')
+          if ids and ids != ''
+            ids = ids.split(',') if ids.is_a? String
+            and_query[:_id] = {
+              '$in' => ids.collect { |id| BSON::ObjectId(id)  }
+            }
+          end
+          and_query
         end
       end
 
