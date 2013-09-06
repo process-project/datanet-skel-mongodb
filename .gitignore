@@ -7,7 +7,7 @@ config/config.yml
 .bundle
 .config
 .yardoc
-Gemfile.lock
+config/.secret
 InstalledFiles
 _yardoc
 coverage
