@@ -18,16 +18,18 @@ module Datanet
         end
 
         def ids
-          ids = []
-          @collection.find.to_a.each { |e|
-            ids << e["_id"].to_s
-          }
-          ids
+          @collection.find.to_a.collect do |e|
+            e["_id"].to_s
+          end
         end
 
         def add(json_doc, relations_map)
           added = @collection.insert(json_doc)
           added.to_s
+        end
+
+        def index
+          entities(@collection.find)
         end
 
         def get id
@@ -53,14 +55,18 @@ module Datanet
         end
 
         def search(and_query)
-          ids = []
-          @collection.find(query(and_query)).to_a.each { |e|
-            ids << e["_id"].to_s
-          }
-          ids
+          entities(@collection.find(query(and_query)))
         end
 
         private
+
+        def entities(collection_result)
+          collection_result.to_a.collect do |e|
+            e['id'] = e['_id'].to_s
+            e.delete '_id'
+            e
+          end
+        end
 
         def json_with_relations(json_doc, relations_map)
           relations_map.each{|prop_name, related_model|
