@@ -16,6 +16,9 @@ require 'grape'
 require 'json'
 require 'json-schema'
 
+require 'mapper'
+require 'mongo'
+
 Dir["#{File.dirname(__FILE__)}/support/*.rb"].each do |file|
   require file
 end

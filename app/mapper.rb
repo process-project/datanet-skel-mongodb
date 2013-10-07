@@ -55,6 +55,7 @@ module Datanet
         end
 
         def search(and_query)
+          puts ">>>>>>>>>>>>>>>>>> #{query(and_query)}"
           entities(@collection.find(query(and_query)))
         end
 
@@ -90,15 +91,44 @@ module Datanet
           BSON::ObjectId id
         end
 
+        OPERATORS = {
+          :<  => '$lt',
+          :<= => '$lte',
+          :>  => '$gt',
+          :>=  => '$gte',
+          :!= => '$ne'
+        }
+
         def query(and_query)
-          ids = and_query.delete('ids')
+          query = and_query.dup
+
+          ids = query.delete('ids')
+          query = query.inject({}) do |hsh, item|
+            k, v = item.first, item.last
+            value = v
+            if v.instance_of? Hash
+              op = v[:operator]
+              if op === :contains
+                v = {'$in' => v[:value]}
+              elsif op == :regexp
+                v = Regexp.new v[:value]
+              else
+                OPERATORS.each do |operator, mongodb_operator|
+                  v = {mongodb_operator => v[:value].to_f} if op === operator
+                end
+              end
+            end
+            hsh[k] = v
+            hsh
+          end
+
           if ids and ids != ''
             ids = ids.split(',') if ids.is_a? String
-            and_query[:_id] = {
+            query[:_id] = {
               '$in' => ids.collect { |id| BSON::ObjectId(id)  }
             }
           end
-          and_query
+          query
         end
       end
 
