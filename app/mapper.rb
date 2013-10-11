@@ -55,7 +55,6 @@ module Datanet
         end
 
         def search(and_query)
-          puts ">>>>>>>>>>>>>>>>>> #{query(and_query)}"
           entities(@collection.find(query(and_query)))
         end
 
@@ -105,20 +104,23 @@ module Datanet
           ids = query.delete('ids')
           query = query.inject({}) do |hsh, item|
             k, v = item.first, item.last
-            value = v
-            if v.instance_of? Hash
-              op = v[:operator]
-              if op === :contains
-                v = {'$in' => v[:value]}
-              elsif op == :regexp
-                v = Regexp.new v[:value]
-              else
-                OPERATORS.each do |operator, mongodb_operator|
-                  v = {mongodb_operator => v[:value].to_f} if op === operator
+            result = {}
+            if v.kind_of? Hash or v.kind_of? Array
+              v_array = (v.instance_of? Array) ? v : [v]
+              v_array.each do |element|
+                op = element[:operator]
+                if op === :contains
+                  result['$in'] = element[:value]
+                elsif op == :regexp
+                  result = Regexp.new element[:value]
+                else
+                  OPERATORS.each do |operator, mongodb_operator|
+                    result[mongodb_operator] = element[:value] if op === operator
+                  end
                 end
               end
             end
-            hsh[k] = v
+            hsh[k] = (result.instance_of? Hash and result.keys.size == 0) ? v : result
             hsh
           end
 

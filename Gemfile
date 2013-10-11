@@ -4,7 +4,7 @@ gem 'rack'
 gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
-gem 'datanet-skel' # , github: 'dice-cyfronet/datanet-skel'
+gem 'datanet-skel'# , path: '/home/marek/git/datanet-skel'
 
 # get this shit outa here:
 gem 'net-sftp'

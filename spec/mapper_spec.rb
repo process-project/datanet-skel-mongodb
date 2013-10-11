@@ -50,5 +50,10 @@ describe Datanet::Skel::Mongodb::Collection do
       expect(collection_mapper).to receive(:find).with({'name' => /\Aa\/.*\/\z/})
       collection.search({'name' => {value: '\Aa\/.*\/\z', operator: :regexp}})
     end
+
+    it 'support compound queries' do
+      expect(collection_mapper).to receive(:find).with({'age' => {'$gt' => 20, '$lt' => 30}})
+      collection.search({'age' => [{value: 20, operator: :>}, {value: 30, operator: :<}]})
+    end
   end
 end
