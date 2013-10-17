@@ -13,7 +13,7 @@ describe Datanet::Skel::Mongodb::Collection do
     it 'should return all record with ids in array' do
       expect(collection_mapper).to receive(:find).with({_id: {'$in' => [BSON::ObjectId('523af2eb866488292e0056c3'), BSON::ObjectId('523af2eb866488292e0056c4')]}})
 
-      collection.search({'ids' => '523af2eb866488292e0056c3,523af2eb866488292e0056c4' })
+      collection.search({'id' => ['523af2eb866488292e0056c3', '523af2eb866488292e0056c4'] })
     end
 
     it 'should support < operator' do

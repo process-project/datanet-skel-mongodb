@@ -101,7 +101,7 @@ module Datanet
         def query(and_query)
           query = and_query.dup
 
-          ids = query.delete('ids')
+          id = query.delete('id')
           query = query.inject({}) do |hsh, item|
             k, v = item.first, item.last
             result = {}
@@ -124,8 +124,8 @@ module Datanet
             hsh
           end
 
-          if ids and ids != ''
-            ids = ids.split(',') if ids.is_a? String
+          if id and id != ''
+            ids = (id.is_a? String) ? [id] : id
             query[:_id] = {
               '$in' => ids.collect { |id| BSON::ObjectId(id)  }
             }
