@@ -1,7 +1,7 @@
 require File.expand_path('../config/environment', __FILE__)
 require File.expand_path('../config/settings', __FILE__)
 
-MODEL_LOCATION = 'model'
+MODEL_LOCATION = 'example/model'
 
 def mapper
   @mapper ||= create_mongo_db_mapper
@@ -16,7 +16,7 @@ def create_mongo_db_mapper
   username  = services['mongodb-2.0'].first['credentials']['username'] rescue nil
   password  = services['mongodb-2.0'].first['credentials']['password'] rescue nil
 
-  db = Mongo::Connection.new(host, port).db(database, :pool_size => 5,  :timeout => 5)
+  db = Mongo::Connection.new(host, port).db(database, :pool_size => 10,  :timeout => 60)
 
   if username and password
     db.authenticate(username, password)
