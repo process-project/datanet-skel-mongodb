@@ -1,0 +1,1 @@
+{"title":"Step","type":"object","properties":{"ordinal":{"type":"integer","required":true},"snapshot":{"type":"array","required":true,"items":{"type":"integer"}},"input":{"type":"string","required":true},"image":{"type":"string","required":false}},"links":[{"rel":"input","href":"/Input/{input}","targetSchema":"Input"},{"rel":"image","href":"/file/{image}","targetSchema":"file"}]}

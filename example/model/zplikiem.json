@@ -1,0 +1,1 @@
+{"title":"zplikiem","type":"object","properties":{"nazwa":{"type":"string","required":true},"plik":{"type":"string","required":true}},"links":[{"rel":"plik","href":"/file/{plik}","targetSchema":"file"}]}

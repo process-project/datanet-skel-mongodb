@@ -1,10 +1,14 @@
 require File.expand_path('../config/environment', __FILE__)
 require File.expand_path('../config/settings', __FILE__)
 
-MODEL_LOCATION = 'example/model'
+MODEL_LOCATION = 'model'
 
 def mapper
   @mapper ||= create_mongo_db_mapper
+end
+
+def ca_payload
+  @ca_payload ||= File.read 'config/simple_ca.crt'
 end
 
 def create_mongo_db_mapper
@@ -30,13 +34,17 @@ def create_mongo_db_mapper
 end
 
 plgrid_auth = Datanet::Skel::PortalAuthenticatable.new(Datanet::Skel::Mongodb::Settings.portal_base_url, Datanet::Skel::Mongodb::Settings.portal_shared_key)
+
+grid_proxy_auth = Datanet::Skel::GridProxyAuth.new ca_payload
+
 auth = Datanet::Skel::RepositoryAuth.new
 auth.repo_secret_path = 'config/.secret'
 auth.settings = Datanet::Skel::Mongodb::Settings
-auth.authenticator = plgrid_auth
+auth.authenticator = grid_proxy_auth
 
 Datanet::Skel::API.mapper = mapper
 Datanet::Skel::API.storage_host = Datanet::Skel::Mongodb::Settings.storage_host
 Datanet::Skel::API.auth = auth
-Datanet::Skel::API.auth_storage = plgrid_auth
+Datanet::Skel::API.auth_storage = grid_proxy_auth
+
 run Datanet::Skel::API
