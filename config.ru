@@ -1,3 +1,4 @@
+require 'rack/stream'
 require File.expand_path('../config/environment', __FILE__)
 require File.expand_path('../config/settings', __FILE__)
 
@@ -33,8 +34,6 @@ def create_mongo_db_mapper
   mapper_decorator
 end
 
-plgrid_auth = Datanet::Skel::PortalAuthenticatable.new(Datanet::Skel::Mongodb::Settings.portal_base_url, Datanet::Skel::Mongodb::Settings.portal_shared_key)
-
 grid_proxy_auth = Datanet::Skel::GridProxyAuth.new ca_payload
 
 auth = Datanet::Skel::RepositoryAuth.new
@@ -47,4 +46,5 @@ Datanet::Skel::API.storage_host = Datanet::Skel::Mongodb::Settings.storage_host
 Datanet::Skel::API.auth = auth
 Datanet::Skel::API.auth_storage = grid_proxy_auth
 
+use Rack::Stream
 run Datanet::Skel::API

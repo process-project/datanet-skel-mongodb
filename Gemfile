@@ -15,6 +15,8 @@ gem 'net-sftp'
 gem 'settingslogic'
 # end of shit
 
+gem 'thin'
+
 group :development, :test do
   gem 'shotgun'
   gem 'pry'
