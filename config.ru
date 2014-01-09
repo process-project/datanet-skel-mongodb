@@ -1,8 +1,7 @@
-require 'rack/stream'
 require File.expand_path('../config/environment', __FILE__)
 require File.expand_path('../config/settings', __FILE__)
 
-MODEL_LOCATION = 'model'
+MODEL_LOCATION = 'example/model'
 
 def mapper
   @mapper ||= create_mongo_db_mapper
@@ -46,5 +45,4 @@ Datanet::Skel::API.storage_host = Datanet::Skel::Mongodb::Settings.storage_host
 Datanet::Skel::API.auth = auth
 Datanet::Skel::API.auth_storage = grid_proxy_auth
 
-use Rack::Stream
 run Datanet::Skel::API
