@@ -1,3 +1,0 @@
-storage_host: "zeus.cyfronet.pl"
-portal_base_url: "https://portal.plgrid.pl/aruliferay/api/external/"
-portal_shared_key: <%= ENV['portal_shared_key'] %>
