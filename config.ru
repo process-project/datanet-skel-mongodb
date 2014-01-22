@@ -1,7 +1,7 @@
 require File.expand_path('../config/environment', __FILE__)
 require File.expand_path('../config/settings', __FILE__)
 
-MODEL_LOCATION = 'example/model'
+MODEL_LOCATION = 'model'
 
 def mapper
   @mapper ||= create_mongo_db_mapper
