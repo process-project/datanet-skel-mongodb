@@ -15,7 +15,7 @@ gem 'net-sftp'
 gem 'settingslogic'
 # end of shit
 
-gem 'thin'
+gem 'puma'
 
 group :development, :test do
   gem 'shotgun'
