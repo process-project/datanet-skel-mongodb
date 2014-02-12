@@ -15,6 +15,8 @@ gem 'net-sftp'
 gem 'settingslogic'
 # end of shit
 
+gem 'rack-cors'
+
 gem 'puma'
 
 group :development, :test do

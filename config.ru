@@ -44,4 +44,11 @@ Datanet::Skel::API.mapper = mapper
 Datanet::Skel::API.auth = auth
 Datanet::Skel::API.auth_storage = grid_proxy_auth
 
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
+  end
+end
+
 run Datanet::Skel::API
