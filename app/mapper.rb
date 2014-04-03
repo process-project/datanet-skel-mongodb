@@ -82,12 +82,20 @@ module Datanet
 
         def entity id
           result = @collection.find_one("_id" => bson(id))
-          raise EntityNotFoundException, "Entity with #{id} not found" unless result
+          not_found!(id) unless result
           result
         end
 
         def bson id
-          BSON::ObjectId id
+          begin
+            BSON::ObjectId id
+          rescue BSON::InvalidObjectId
+            not_found!(id)
+          end
+        end
+
+        def not_found!(id)
+          raise EntityNotFoundException, "Entity #{id} not found"
         end
 
         OPERATORS = {
