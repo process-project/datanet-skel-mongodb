@@ -46,8 +46,10 @@ Datanet::Skel::API.auth_storage = grid_proxy_auth
 
 use Rack::Cors do
   allow do
-    origins '*'
+    origins *(auth.cors_origins)
     resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
+
+    Datanet::Skel::API.auth.cors = self
   end
 end
 
