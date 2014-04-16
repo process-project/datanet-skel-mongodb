@@ -11,6 +11,11 @@ def ca_payload
   @ca_payload ||= File.read 'config/simple_ca.crt'
 end
 
+def crl_location
+  #default location of simpleca crl, exists on api.paas.datanet.plgrid.pl
+  @crl_location ||= "/etc/grid-security/certificates/afed687d.r0"
+end
+
 def create_mongo_db_mapper
   services = JSON.parse(ENV['VCAP_SERVICES']) if ENV['VCAP_SERVICES']
 
@@ -33,7 +38,7 @@ def create_mongo_db_mapper
   mapper_decorator
 end
 
-grid_proxy_auth = Datanet::Skel::GridProxyAuth.new ca_payload
+grid_proxy_auth = Datanet::Skel::GridProxyAuth.new ca_payload, crl_location
 
 auth = Datanet::Skel::RepositoryAuth.new
 auth.repo_secret_path = 'config/.secret'
