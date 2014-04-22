@@ -4,7 +4,6 @@ gem 'rack'
 gem 'mongo', '1.7.0'
 gem 'bson', '~> 1.7.0'
 gem 'bson_ext', '1.7.0'
-gem 'json-schema', '2.1.3'
 gem 'datanet-skel'#, path: '/home/marek/git/datanet-skel'
 
 gem 'ruby-gridftp'#, git: 'git@dev.cyfronet.pl:commons/ruby-gridftp.git', branch: :master
