@@ -3,6 +3,7 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 
 require 'boot'
 require 'json'
+require 'middleware/catch_errors'
 
 Bundler.require :default, ENV['RACK_ENV']
 

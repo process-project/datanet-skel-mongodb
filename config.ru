@@ -57,5 +57,6 @@ use Rack::Cors do
     Datanet::Skel::API.auth.cors = self
   end
 end
+use CatchErrors
 
 run Datanet::Skel::API
