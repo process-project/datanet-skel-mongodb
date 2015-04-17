@@ -7,14 +7,15 @@ module Datanet
           @db = mongodb
         end
 
-        def collection(entity_type)
-          Collection.new @db[entity_type]
+        def collection(entity_type, username)
+          Collection.new(@db[entity_type], username)
         end
       end
 
       class Collection
-        def initialize collection
+        def initialize(collection, username)
           @collection = collection
+          @username = username
         end
 
         def ids
@@ -24,7 +25,8 @@ module Datanet
         end
 
         def add(json_doc, relations_map)
-          added = @collection.insert(json_doc)
+          doc = json_doc.merge('_datanet_created_by' => @username)
+          added = @collection.insert(doc)
           added.to_s
         end
 
@@ -34,7 +36,8 @@ module Datanet
 
         def get id
           hash = entity(id).to_hash
-          hash.delete '_id'
+          hash.delete('_id')
+          hash.delete('_datanet_created_by')
           hash
         end
 
