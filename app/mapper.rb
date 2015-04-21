@@ -31,30 +31,27 @@ module Datanet
         end
 
         def index
-          entities(@collection.find)
+          entities(@collection.find(query))
         end
 
-        def get id
-          hash = entity(id).to_hash
-          hash.delete('_id')
-          hash.delete('_datanet_created_by')
-          hash
+        def get(id)
+          entity(id).to_hash.tap { |e| clean_private_data(e) }
         end
 
         def remove(id)
+          entity(id)
           @collection.remove('_id' => bson(id))
         end
 
         def update(id, json_doc, relations_map)
           entity = entity(id)
-          json_doc.each{|k,v|
-            entity[k] = v
-          }
+          json_doc.each { |k,v| entity[k] = v }
           @collection.save(entity)
         end
 
         def replace(id, json_doc, relations_map)
-          @collection.update({"_id" => bson(id)}, json_doc)
+          entity(id)
+          @collection.update({ "_id" => bson(id) }, json_doc)
         end
 
         def search(and_query)
@@ -63,19 +60,14 @@ module Datanet
 
         private
 
-        def entities(collection_result)
-          collection_result.to_a.collect do |e|
-            e['id'] = e['_id'].to_s
-            e.delete '_id'
-            e
-          end
-        end
-
         def json_with_relations(json_doc, relations_map)
-          relations_map.each{|prop_name, related_model|
+          relations_map.each do |prop_name, related_model|
             property_value = json_doc[prop_name]
-            json_doc[prop_name] = convert_into_relation(property_value, related_model) if property_value
-          }
+            if property_value
+              json_doc[prop_name] =
+                convert_into_relation(property_value, related_model)
+            end
+          end
         end
 
         def convert_into_relation(ref_id, model_name)
@@ -83,13 +75,26 @@ module Datanet
           bson(ref_id)
         end
 
-        def entity id
-          result = @collection.find_one("_id" => bson(id))
+        def entities(collection)
+          collection.to_a.collect { |e| clean_private_data(e) }
+        end
+
+        def entity(id)
+          result = @collection.find_one('_id' => bson(id))
           not_found!(id) unless result
+          not_allowed! unless owned?(result)
           result
         end
 
-        def bson id
+        def clean_private_data(entity)
+          entity.tap do |e|
+            e['id'] = e['_id'].to_s
+            e.delete '_id'
+            e.delete('_datanet_created_by')
+          end
+        end
+
+        def bson(id)
           begin
             BSON::ObjectId id
           rescue BSON::InvalidObjectId
@@ -97,8 +102,20 @@ module Datanet
           end
         end
 
+        def owned?(result)
+          !private? || result['_datanet_created_by'] == @username
+        end
+
+        def private?
+          Datanet::Skel::API.auth.settings.data_separation
+        end
+
         def not_found!(id)
           raise EntityNotFoundException, "Entity #{id} not found"
+        end
+
+        def not_allowed!
+          raise PermissionDenied, "Operation not allowed"
         end
 
         OPERATORS = {
@@ -109,10 +126,10 @@ module Datanet
           :!= => '$ne'
         }
 
-        def query(and_query)
+        def query(and_query = {})
           query = and_query.dup
-
           id = query.delete('id')
+
           query = query.inject({}) do |hsh, item|
             k, v = item.first, item.last
             result = {}
@@ -131,20 +148,21 @@ module Datanet
                 end
               end
             end
-            hsh[k] = (result.instance_of? Hash and result.keys.size == 0) ? v : result
+            hsh[k] = (result.instance_of? Hash && result.keys.size == 0) ? v : result
             hsh
           end
 
-          if id and id != ''
+          if id && id != ''
             ids = (id.is_a? String) ? [id] : id
-            query[:_id] = {
-              '$in' => ids.collect { |id| BSON::ObjectId(id)  }
-            }
+            query[:_id] = { '$in' => ids.collect { |id| BSON::ObjectId(id) } }
           end
+          if private?
+            query[:_datanet_created_by] = { '$eq' => @username }
+          end
+
           query
         end
       end
-
     end
   end
 end

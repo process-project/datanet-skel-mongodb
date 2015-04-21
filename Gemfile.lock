@@ -22,7 +22,7 @@ GEM
     datanet-skel (0.0.1)
       grape (= 0.6.0)
       json
-      json-schema
+      json-schema (~> 2.2.1)
       rack-stream
       settingslogic
       sinatra
