@@ -157,7 +157,7 @@ module Datanet
             query[:_id] = { '$in' => ids.collect { |id| BSON::ObjectId(id) } }
           end
           if private?
-            query[:_datanet_created_by] = { '$eq' => @username }
+            query[:_datanet_created_by] = { '$in' => [@username] }
           end
 
           query
