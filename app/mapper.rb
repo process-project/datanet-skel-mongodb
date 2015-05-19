@@ -51,7 +51,8 @@ module Datanet
 
         def replace(id, json_doc, relations_map)
           entity(id)
-          @collection.update({ "_id" => bson(id) }, json_doc)
+          doc = json_doc.merge('_datanet_created_by' => @username)
+          @collection.update({ "_id" => bson(id) }, doc)
         end
 
         def search(and_query)
